@@ -1,0 +1,143 @@
+# Lista de ejemplo con algunos Jedi
+jedis = [
+    {
+        "nombre": "Ahsoka Tano",
+        "maestros": ["Anakin Skywalker"],
+        "colores_sable": ["verde", "azul", "blanco"],
+        "especie": "togruta",
+    },
+    {
+        "nombre": "Kit Fisto",
+        "maestros": ["Yoda"],
+        "colores_sable": ["verde"],
+        "especie": "nautolano",
+    },
+    {
+        "nombre": "Luke Skywalker",
+        "maestros": ["Yoda", "Obi-Wan Kenobi"],
+        "colores_sable": ["verde", "azul"],
+        "especie": "humano",
+    },
+    {
+        "nombre": "Yoda",
+        "maestros": [],
+        "colores_sable": ["verde"],
+        "especie": "unknown",
+    },
+    {
+        "nombre": "Qui-Gon Jin",
+        "maestros": ["Count Dooku"],
+        "colores_sable": ["verde"],
+        "especie": "humano",
+    },
+    {
+        "nombre": "Mace Windu",
+        "maestros": ["Cyslin Myr"],
+        "colores_sable": ["violeta"],
+        "especie": "humano",
+    },
+    {
+        "nombre": "Aayla Secura",
+        "maestros": ["Quinlan Vos"],
+        "colores_sable": ["azul"],
+        "especie": "twi'lek",
+    },
+    {
+        "nombre": "Anakin Skywalker",
+        "maestros": ["Obi-Wan Kenobi"],
+        "colores_sable": ["azul", "rojo"],
+        "especie": "humano",
+    },
+    {
+        "nombre": "Rey",
+        "maestros": ["Luke Skywalker", "Leia Organa"],
+        "colores_sable": ["azul", "amarillo"],
+        "especie": "humano",
+    },
+    # Puedes agregar más Jedi aquí
+]
+
+# a. listado ordenado por nombre y por especie
+def listado_ordenado(jedis):
+    por_nombre = sorted(jedis, key=lambda x: x["nombre"])
+    por_especie = sorted(jedis, key=lambda x: x["especie"])
+    return por_nombre, por_especie
+
+# b. mostrar toda la información de Ahsoka Tano y Kit Fisto
+def info_jedi(jedis, nombres):
+    return [j for j in jedis if j["nombre"] in nombres]
+
+# c. mostrar todos los padawan de Yoda y Luke Skywalker
+def padawans_de(jedis, maestro):
+    return [j["nombre"] for j in jedis if maestro in j.get("maestros", [])]
+
+# d. mostrar los Jedi de especie humana y twi'lek
+def jedis_por_especie(jedis, especies):
+    return [j for j in jedis if j["especie"].lower() in [e.lower() for e in especies]]
+
+# e. listar todos los Jedi que comienzan con A
+def jedis_comienzan_con(jedis, letra):
+    return [j for j in jedis if j["nombre"].startswith(letra)]
+
+# f. mostrar los Jedi que usaron sable de luz de más de un color
+def jedis_varios_colores(jedis):
+    return [j for j in jedis if len(set(j["colores_sable"])) > 1]
+
+# g. indicar los Jedi que utilizaron sable de luz amarillo o violeta
+def jedis_sable_amarillo_violeta(jedis):
+    return [j for j in jedis if "amarillo" in j["colores_sable"] or "violeta" in j["colores_sable"]]
+
+# h. indicar los nombre de los padawans de Qui-Gon Jin y Mace Windu, si los tuvieron
+def padawans_de_maestros(jedis, maestros):
+    resultado = {}
+    for maestro in maestros:
+        resultado[maestro] = padawans_de(jedis, maestro)
+    return resultado
+
+# Ejemplo de uso:
+if __name__ == "__main__":
+    # a.
+    por_nombre, por_especie = listado_ordenado(jedis)
+    print("Listado ordenado por nombre:")
+    for j in por_nombre:
+        print(j["nombre"])
+    print("\nListado ordenado por especie:")
+    for j in por_especie:
+        print(f"{j['nombre']} - {j['especie']}")
+
+    # b.
+    print("\nInformación de Ahsoka Tano y Kit Fisto:")
+    for j in info_jedi(jedis, ["Ahsoka Tano", "Kit Fisto"]):
+        print(j)
+
+    # c.
+    print("\nPadawans de Yoda:")
+    print(padawans_de(jedis, "Yoda"))
+    print("Padawans de Luke Skywalker:")
+    print(padawans_de(jedis, "Luke Skywalker"))
+
+    # d.
+    print("\nJedi de especie humana y twi'lek:")
+    for j in jedis_por_especie(jedis, ["humano", "twi'lek"]):
+        print(j["nombre"], "-", j["especie"])
+
+    # e.
+    print("\nJedi que comienzan con A:")
+    for j in jedis_comienzan_con(jedis, "A"):
+        print(j["nombre"])
+
+    # f.
+    print("\nJedi que usaron sable de más de un color:")
+    for j in jedis_varios_colores(jedis):
+        print(j["nombre"], "->", j["colores_sable"])
+
+    # g.
+    print("\nJedi que usaron sable amarillo o violeta:")
+    for j in jedis_sable_amarillo_violeta(jedis):
+        print(j["nombre"], "->", j["colores_sable"])
+
+    # h.
+    print("\nPadawans de Qui-Gon Jin y Mace Windu:")
+    padawans = padawans_de_maestros(jedis, ["Qui-Gon Jin", "Mace Windu"])
+    for maestro, aprendices in padawans.items():
+        print(f"{maestro}: {aprendices}")
